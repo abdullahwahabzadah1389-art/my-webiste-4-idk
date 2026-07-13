@@ -295,9 +295,10 @@ export default function Services() {
 
         {/* Services Grid */}
         <motion.div 
+          key={isExpanded.toString()}
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
+          animate="visible"
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-14"
         >

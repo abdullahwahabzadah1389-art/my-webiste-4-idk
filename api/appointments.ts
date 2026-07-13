@@ -29,8 +29,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const timeDisplay = preferredTime || "Not specified";
       const phoneDisplay = phone || "Not specified";
       const emailDisplay = email || "Not specified";
-      const addressDisplay = address || "Not specified";
       const notesDisplay = notes || "None";
+      const addressDisplay = address || "Not specified";
 
       const adminEmailHtml = `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e1e8ed; border-radius: 12px; background-color: #ffffff;">
@@ -90,14 +90,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       `;
 
       await resend.emails.send({
-        from: \`Trust TV Lead <\${SENDER_EMAIL}>\`,
+        from: `Trust TV Lead <${SENDER_EMAIL}>`,
         to: ADMIN_EMAIL,
-        subject: \`🚨 New Appointment Lead - \${name} (\${serviceDisplay})\`,
+        subject: `🚨 New Appointment Lead - ${name} (${serviceDisplay})`,
         html: adminEmailHtml,
       });
 
       if (email && email.trim() !== "") {
-        const customerEmailHtml = \`
+        const customerEmailHtml = `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e1e8ed; border-radius: 12px; background-color: #ffffff;">
             <div style="background-color: #0a1628; padding: 24px; border-radius: 8px 8px 0 0; text-align: center;">
               <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">Appointment Requested</h1>
@@ -105,15 +105,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             </div>
             
             <div style="padding: 24px; color: #1e293b; line-height: 1.6;">
-              <h3 style="font-size: 18px; margin-top: 0; color: #0a1628;">Hi \${name},</h3>
+              <h3 style="font-size: 18px; margin-top: 0; color: #0a1628;">Hi ${name},</h3>
               <p style="font-size: 15px;">Thank you for requesting an appointment with Trust TV Mounting! We have received your request and are currently reviewing our schedule.</p>
               
               <div style="background-color: #f8fafc; border-left: 4px solid #c9a227; padding: 16px; margin: 20px 0; border-radius: 0 8px 8px 0;">
                 <h4 style="margin: 0 0 10px 0; color: #0a1628; font-size: 15px;">Your Requested Service Details:</h4>
-                <p style="margin: 4px 0; font-size: 14px;"><strong>Service:</strong> \${serviceDisplay}</p>
-                <p style="margin: 4px 0; font-size: 14px;"><strong>Preferred Date:</strong> \${dateDisplay}</p>
-                <p style="margin: 4px 0; font-size: 14px;"><strong>Preferred Time:</strong> \${timeDisplay}</p>
-                <p style="margin: 4px 0; font-size: 14px;"><strong>Address:</strong> \${addressDisplay}</p>
+                <p style="margin: 4px 0; font-size: 14px;"><strong>Service:</strong> ${serviceDisplay}</p>
+                <p style="margin: 4px 0; font-size: 14px;"><strong>Preferred Date:</strong> ${dateDisplay}</p>
+                <p style="margin: 4px 0; font-size: 14px;"><strong>Preferred Time:</strong> ${timeDisplay}</p>
+                <p style="margin: 4px 0; font-size: 14px;"><strong>Address:</strong> ${addressDisplay}</p>
               </div>
               
               <p style="font-size: 15px;"><strong>What's next?</strong></p>
@@ -128,12 +128,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               <p style="margin: 3px 0 0 0;">Serving McKinney, Frisco, Plano, Allen, Celina, Princeton, & DFW Metroplex</p>
             </div>
           </div>
-        \`;
+        `;
 
         await resend.emails.send({
-          from: \`Trust TV Mounting <\${SENDER_EMAIL}>\`,
+          from: `Trust TV Mounting <${SENDER_EMAIL}>`,
           to: email,
-          subject: \`📅 Appointment Request Received - Trust TV Mounting\`,
+          subject: `📅 Appointment Request Received - Trust TV Mounting`,
           html: customerEmailHtml,
         });
       }

@@ -1,0 +1,8 @@
+{
+  "name": "Trust TV Mounting & Home Solutions",
+  "description": "Professional, responsive landing page for Trust TV Mounting & Home Solutions, offering TV mounting, home theater, smart home installation, and custom wiring services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

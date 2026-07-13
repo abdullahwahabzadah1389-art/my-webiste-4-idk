@@ -8,7 +8,7 @@ const services = [
   'Light Fixture Installation', 'Chandelier Installation',
   'Electrical Outlet Installation', 'Outdoor Lighting Installation',
   'Smart Home System Installation', 'Drywall Services',
-  'Painting Services', 'Any Handyman Projects', 'Other',
+  'Painting Services', 'Other',
 ]
 
 export default function AppointmentForm() {

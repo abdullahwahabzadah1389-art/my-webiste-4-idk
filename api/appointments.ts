@@ -5,6 +5,18 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "trusttvmountingservices@gmail.com";
 const SENDER_EMAIL = process.env.SENDER_EMAIL || "onboarding@resend.dev";
 
+function formatTime12h(time24: string): string {
+  if (!time24 || !time24.includes(':')) return time24;
+  const [hours24, minutes] = time24.split(":").map(Number);
+  if (isNaN(hours24) || isNaN(minutes)) return time24;
+  
+  const period = hours24 >= 12 ? 'PM' : 'AM';
+  const hours12 = hours24 % 12 || 12;
+  const minutesStr = minutes.toString().padStart(2, '0');
+  
+  return `${hours12}:${minutesStr} ${period}`;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -26,7 +38,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (resend) {
       const serviceDisplay = service === "Other" && customService ? `Other (${customService})` : service;
       const dateDisplay = preferredDate || "Not specified";
-      const timeDisplay = preferredTime || "Not specified";
+      const timeDisplay = preferredTime ? formatTime12h(preferredTime) : "Not specified";
       const phoneDisplay = phone || "Not specified";
       const emailDisplay = email || "Not specified";
       const notesDisplay = notes || "None";

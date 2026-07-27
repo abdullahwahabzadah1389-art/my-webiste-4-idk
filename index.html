@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
@@ -26,10 +26,186 @@
     <link rel="apple-touch-icon" href="/apple-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+    <!-- Three.js Library for Interactive 3D Background Canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   </head>
-  <body>
-    <div id="root"></div>
+  <body class="bg-background text-foreground antialiased selection:bg-[#c9a227]/30 selection:text-[#0a1628] overflow-x-hidden">
+    <!-- Fixed Interactive 3D Canvas Background -->
+    <canvas id="three-bg" class="fixed inset-0 pointer-events-none z-0 opacity-35"></canvas>
+
+    <div id="root" class="relative z-10"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- 3D Interactive Features Controller (Three.js Canvas & 3D Tilt Card Effects) -->
+    <script>
+      (function() {
+        // --- 1. Interactive 3D Background Canvas (Three.js) ---
+        const canvas = document.getElementById('three-bg');
+        if (!canvas || typeof THREE === 'undefined') return;
+
+        let scene, camera, renderer, particleSystem, linesMesh;
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+        let windowHalfX = window.innerWidth / 2;
+        let windowHalfY = window.innerHeight / 2;
+        const isMobile = window.innerWidth < 768;
+
+        function init3D() {
+          scene = new THREE.Scene();
+          camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+          camera.position.z = 400;
+
+          renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            alpha: true,
+            antialias: !isMobile,
+            powerPreference: "low-power"
+          });
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5));
+
+          // Particles setup
+          const particleCount = isMobile ? 45 : 110;
+          const geometry = new THREE.BufferGeometry();
+          const positions = new Float32Array(particleCount * 3);
+          const colors = new Float32Array(particleCount * 3);
+
+          const goldColor = new THREE.Color(0xc9a227);
+          const blueColor = new THREE.Color(0x3b82f6);
+          const whiteColor = new THREE.Color(0xffffff);
+
+          for (let i = 0; i < particleCount; i++) {
+            positions[i * 3] = (Math.random() - 0.5) * 800;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 800;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 500;
+
+            const randColor = Math.random();
+            const chosenColor = randColor > 0.5 ? goldColor : (randColor > 0.25 ? blueColor : whiteColor);
+            colors[i * 3] = chosenColor.r;
+            colors[i * 3 + 1] = chosenColor.g;
+            colors[i * 3 + 2] = chosenColor.b;
+          }
+
+          geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+          geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+          const pMaterial = new THREE.PointsMaterial({
+            size: isMobile ? 3 : 4,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+          });
+
+          particleSystem = new THREE.Points(geometry, pMaterial);
+          scene.add(particleSystem);
+
+          // Subtle Connecting Wireframe Lines on Desktop
+          if (!isMobile) {
+            const lineGeometry = new THREE.BufferGeometry();
+            const linePositions = new Float32Array(particleCount * particleCount * 6);
+            lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+
+            const lineMaterial = new THREE.LineBasicMaterial({
+              color: 0xc9a227,
+              transparent: true,
+              opacity: 0.08,
+              blending: THREE.AdditiveBlending
+            });
+
+            linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+            scene.add(linesMesh);
+          }
+
+          window.addEventListener('resize', onWindowResize, false);
+          document.addEventListener('mousemove', onDocumentMouseMove, false);
+          animate();
+        }
+
+        function onWindowResize() {
+          windowHalfX = window.innerWidth / 2;
+          windowHalfY = window.innerHeight / 2;
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onDocumentMouseMove(event) {
+          mouseX = (event.clientX - windowHalfX) * 0.2;
+          mouseY = (event.clientY - windowHalfY) * 0.2;
+        }
+
+        let isHidden = false;
+        document.addEventListener('visibilitychange', () => {
+          isHidden = document.hidden;
+        });
+
+        function animate() {
+          if (isHidden) {
+            requestAnimationFrame(animate);
+            return;
+          }
+
+          targetX += (mouseX - targetX) * 0.03;
+          targetY += (mouseY - targetY) * 0.03;
+
+          if (particleSystem) {
+            particleSystem.rotation.y += 0.0008;
+            particleSystem.rotation.x += 0.0004;
+            camera.position.x += (targetX - camera.position.x) * 0.02;
+            camera.position.y += (-targetY - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
+          }
+
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        }
+
+        // Initialize 3D when DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init3D);
+        } else {
+          init3D();
+        }
+
+        // --- 2. Interactive 3D Card Tilt Effect ---
+        let currentActiveCard = null;
+
+        document.addEventListener('mousemove', function(e) {
+          if (window.innerWidth < 768) return; // Disable tilt on mobile for smooth performance
+
+          const card = e.target.closest('.depth-card, .glass-card, .tilt-card');
+          
+          if (card) {
+            if (currentActiveCard && currentActiveCard !== card) {
+              resetCardTilt(currentActiveCard);
+            }
+            currentActiveCard = card;
+
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -8; // Max 8 deg tilt
+            const rotateY = ((x - centerX) / centerX) * 8;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015) translateZ(8px)`;
+            card.style.transition = 'transform 0.1s ease-out';
+          } else if (currentActiveCard) {
+            resetCardTilt(currentActiveCard);
+            currentActiveCard = null;
+          }
+        });
+
+        function resetCardTilt(card) {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1) translateZ(0px)';
+          card.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        }
+      })();
+    </script>
   </body>
 </html>

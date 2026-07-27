@@ -273,7 +273,7 @@ export default function Services() {
   const displayedServices = isExpanded ? services : services.slice(0, 9)
 
   return (
-    <section id="services" className="w-full py-24 px-4 bg-gray-50 overflow-hidden">
+    <section id="services" className="relative w-full py-24 px-4 bg-gray-50/80 bg-ambient-mesh overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -282,13 +282,13 @@ export default function Services() {
           transition={{ duration: 0.6 }}
           className="flex flex-col items-center"
         >
-          <p className="text-[#c9a227] text-xs font-bold uppercase tracking-widest bg-yellow-400/10 px-3 py-1.5 rounded-full mb-3 flex items-center gap-1.5">
+          <p className="text-[#c9a227] text-xs font-bold uppercase tracking-widest bg-[#c9a227]/10 border border-[#c9a227]/20 px-3.5 py-1.5 rounded-full mb-3 flex items-center gap-1.5 shadow-sm">
             <Sparkles size={12} className="text-[#c9a227]" />
             What We Do Best
           </p>
-          <h2 className="text-center font-bold text-[#0a1628] text-3xl md:text-4xl">Our Services</h2>
-          <div className="w-16 h-1 bg-[#c9a227] rounded-full mt-4" />
-          <p className="text-center text-gray-500 mt-5 max-w-2xl mx-auto text-base">
+          <h2 className="text-center font-extrabold text-[#0a1628] text-3xl md:text-4xl tracking-tight">Our Services</h2>
+          <div className="w-16 h-1 bg-[#c9a227] rounded-full mt-4 shadow-sm" />
+          <p className="text-center text-gray-600 mt-5 max-w-2xl mx-auto text-base leading-relaxed">
             From professional TV mounting to custom smart home setups and home painting — we handle your home solutions with certified expertise. Click any service card to view complete specifications and photos.
           </p>
         </motion.div>
@@ -300,7 +300,7 @@ export default function Services() {
           initial="hidden"
           animate="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-14"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 mt-14"
         >
           {displayedServices.map((s) => {
             const Icon = s.icon
@@ -309,23 +309,23 @@ export default function Services() {
                 key={s.title} 
                 variants={cardVariants}
                 onClick={() => setActiveService(s)}
-                className={`group bg-white rounded-2xl p-7 border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col justify-between ${s.colSpan ?? ''}`}
+                className={`group depth-card glass-card rounded-2xl p-7 border border-white/80 shadow-depth-sm hover:border-[#c9a227]/40 cursor-pointer flex flex-col justify-between ${s.colSpan ?? ''}`}
               >
                 <div>
-                  <div className="w-12 h-12 bg-[#c9a227]/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-[#c9a227]/20 transition-colors">
-                    <Icon size={24} className="text-[#c9a227]" />
+                  <div className="w-13 h-13 bg-[#c9a227]/10 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-[#c9a227] group-hover:text-[#0a1628] transition-all duration-300 shadow-inner">
+                    <Icon size={24} className="text-[#c9a227] group-hover:text-[#0a1628] transition-colors" />
                   </div>
                   <h3 className="font-bold text-[#0a1628] text-lg group-hover:text-[#c9a227] transition-colors">
                     {s.title}
                   </h3>
-                  <p className="text-gray-500 text-sm mt-2 leading-relaxed">
+                  <p className="text-gray-600 text-sm mt-2 leading-relaxed">
                     {s.description}
                   </p>
                 </div>
                 
-                <div className="mt-5 pt-4 border-t border-gray-50 flex items-center justify-between text-[#c9a227] text-xs font-semibold">
-                  <span>View Photo & Details</span>
-                  <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
+                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-[#c9a227] text-xs font-bold tracking-wide">
+                  <span>View Photo &amp; Details</span>
+                  <ArrowRight size={14} className="transform group-hover:translate-x-1.5 transition-transform duration-300" />
                 </div>
               </motion.div>
             )
@@ -336,7 +336,7 @@ export default function Services() {
         <div className="flex justify-center mt-12">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-[#0a1628] font-extrabold text-sm px-7 py-3.5 rounded-full shadow-md border border-gray-150 transition-all duration-300 transform hover:scale-[1.03] active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-2 btn-tactile-outline text-[#0a1628] font-extrabold text-sm px-8 py-3.5 rounded-full shadow-depth-sm transition-all duration-300 transform hover:scale-[1.02] active:scale-95 cursor-pointer"
           >
             <span>{isExpanded ? 'Show Less' : 'More Services'}</span>
             <ArrowRight size={16} className={`text-[#c9a227] transition-transform duration-300 ${isExpanded ? 'rotate-[-90deg]' : 'rotate-90'}`} />
@@ -346,17 +346,17 @@ export default function Services() {
 
       {/* Interactive Detail Modal */}
       {activeService && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-xs transition-all duration-300">
+        <div className="fixed inset-0 bg-[#0a1628]/80 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all duration-300">
           {/* Backdrop Close Click */}
           <div className="absolute inset-0" onClick={() => setActiveService(null)} />
 
           {/* Modal Card */}
-          <div className="relative w-full max-w-4xl bg-[#0a1628] border border-white/10 rounded-3xl overflow-hidden shadow-2xl z-10 grid grid-cols-1 md:grid-cols-12 max-h-[90vh]">
+          <div className="relative w-full max-w-4xl glass-card-dark rounded-3xl overflow-hidden shadow-depth-dark z-10 grid grid-cols-1 md:grid-cols-12 max-h-[90vh]">
             
             {/* Floating Close Button */}
             <button 
               onClick={() => setActiveService(null)}
-              className="absolute top-4 right-4 text-white/70 hover:text-white bg-black/40 hover:bg-black/60 p-2 rounded-full transition-all z-20"
+              className="absolute top-4 right-4 text-white/80 hover:text-white bg-black/50 hover:bg-black/70 p-2.5 rounded-full backdrop-blur-md border border-white/10 transition-all z-20 shadow-md"
               aria-label="Close details"
             >
               <X size={20} />
@@ -370,7 +370,7 @@ export default function Services() {
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/90 via-transparent to-transparent md:hidden" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628] via-transparent to-transparent md:hidden" />
             </div>
 
             {/* Text & Action Details (Right/Bottom) */}
@@ -412,7 +412,7 @@ export default function Services() {
                     <Clock size={14} className="text-yellow-500" />
                     Est. Duration:
                   </span>
-                  <span className="font-bold text-white bg-white/10 px-2.5 py-1 rounded-sm">
+                  <span className="font-bold text-white bg-white/10 px-2.5 py-1 rounded-md border border-white/10">
                     {activeService.estimatedTime}
                   </span>
                 </div>
@@ -420,13 +420,13 @@ export default function Services() {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => handleBookService(activeService.title)}
-                    className="w-full bg-[#c9a227] hover:bg-yellow-500 text-[#0a1628] font-bold text-xs py-3 rounded-lg transition-all text-center cursor-pointer"
+                    className="w-full btn-tactile-gold text-[#0a1628] font-bold text-xs py-3 rounded-xl transition-all text-center cursor-pointer shadow-md"
                   >
                     Book This Service
                   </button>
                   <a
                     href="tel:4697933130"
-                    className="w-full border border-white/20 hover:border-[#c9a227] hover:text-[#c9a227] text-white font-bold text-xs py-3 rounded-lg transition-all text-center flex items-center justify-center"
+                    className="w-full btn-tactile-outline text-white font-bold text-xs py-3 rounded-xl transition-all text-center flex items-center justify-center"
                   >
                     Call Now
                   </a>

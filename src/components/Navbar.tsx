@@ -43,12 +43,12 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#0a1628]/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 cursor-pointer">
-          <img src="/logo.png" alt="Trust TV Mounting Logo" className="h-11 w-11 object-cover rounded-full bg-white p-0.5 border border-white/10" />
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass-sticky-nav shadow-depth-lg' : 'bg-gradient-to-b from-[#0a1628]/80 to-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2.5 cursor-pointer group">
+          <img src="/logo.png" alt="Trust TV Mounting Logo" className="h-11 w-11 object-cover rounded-full bg-white p-0.5 border border-white/20 shadow-md transition-transform duration-300 group-hover:scale-105" />
           <span className="text-white font-bold text-base leading-tight">
-            Trust TV Mounting<br /><span className="text-[#c9a227] font-medium text-xs">& Home Solutions</span>
+            Trust TV Mounting<br /><span className="text-[#c9a227] font-medium text-xs tracking-wide">& Home Solutions</span>
           </span>
         </Link>
 
@@ -58,7 +58,7 @@ export default function Navbar() {
               key={link.href} 
               href={getHref(link.href)} 
               onClick={(e) => handleLinkClick(e, link.href)}
-              className="text-white/70 hover:text-[#c9a227] text-sm font-medium transition"
+              className="text-white/80 hover:text-[#c9a227] text-sm font-medium transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -66,7 +66,7 @@ export default function Navbar() {
           <a 
             href={isHome ? '#appointment' : '/#appointment'} 
             onClick={(e) => handleLinkClick(e, '#appointment')}
-            className="bg-[#c9a227] hover:bg-[#e2be4a] text-[#0a1628] font-semibold px-5 py-2 rounded-lg text-sm transition"
+            className="btn-tactile-gold text-[#0a1628] font-bold px-5 py-2.5 rounded-xl text-sm transition"
           >
             Book Appointment
           </a>

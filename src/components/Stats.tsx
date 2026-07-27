@@ -73,7 +73,8 @@ export default function Stats() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="relative z-10 bg-[#0a1628] rounded-[1.5rem] p-4 md:p-6 shadow-lg border border-white/10 overflow-hidden"
+          style={{ backgroundColor: '#0a1331' }}
+          className="relative z-10 glass-card-dark rounded-[1.5rem] p-4 md:p-6 shadow-depth-dark overflow-hidden"
         >
           {/* Decorative Background Elements */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-[#c9a227]/5 rounded-full blur-3xl pointer-events-none" />

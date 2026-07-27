@@ -74,13 +74,13 @@ export default function Features() {
               <motion.div 
                 key={f.title} 
                 variants={itemVariants}
-                className="bg-gray-50 rounded-2xl p-7 border border-gray-100 hover:shadow-md transition-shadow"
+                className="depth-card glass-card rounded-2xl p-7 border border-gray-200/60 shadow-depth-sm hover:border-[#c9a227]/40 transition-all duration-300"
               >
-                <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center mb-5 shadow-sm">
-                  <Icon size={20} className="text-[#0a1628]" />
+                <div className="w-12 h-12 bg-[#0a1628] rounded-xl flex items-center justify-center mb-5 shadow-md">
+                  <Icon size={20} className="text-[#c9a227]" />
                 </div>
-                <h3 className="font-semibold text-[#0a1628] text-lg">{f.title}</h3>
-                <p className="text-gray-500 text-sm mt-2 leading-relaxed">{f.description}</p>
+                <h3 className="font-bold text-[#0a1628] text-lg">{f.title}</h3>
+                <p className="text-gray-600 text-sm mt-2 leading-relaxed">{f.description}</p>
               </motion.div>
             )
           })}
